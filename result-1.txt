@@ -1,0 +1,14 @@
+*********************
+**** Statistics *****
+*********************
+Total Lines Read: 8
+Total Words Read: 94
+Break Down by Key Word
+        minnesota: 0
+        only: 2
+        it: 3
+        in: 3
+        the: 7
+        stomach: 0
+        was: 4
+Total Key Words: 19

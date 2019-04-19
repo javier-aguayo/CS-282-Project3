@@ -13,7 +13,6 @@ public class Driver
 
 		Hash test = new Hash(words);
 
-		test.printLetterCounts();
 
 	}
 

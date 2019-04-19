@@ -1,13 +1,13 @@
-public class KeyNode
+public class Node
 {
 	private String key;
 	private int value;
 
-	public KeyNode(String Key)
+	public Node(String Key)
 	{
 		key = Key;
 	}
-	public KeyNode(String Key, int Value)
+	public Node(String Key, int Value)
 	{
 		key = Key;
 		value = Value;

@@ -6,13 +6,13 @@ public class Hash
 	//class variables
 	private String[] table;
 	private int size;
+	int[] gvalues = new int[26]; //holds g values for each letter, -1 means gvalue not assigned
 
 
 
 	//constructors
 	public Hash(Vector<String> words)
 	{
-		this.size = words.size();
 		table = new String[size];
 
 		load(words);
@@ -25,24 +25,94 @@ public class Hash
 	{
 		size = words.size();
 
-		cichelli(stackWords(words));
+		cichelli(stackWords(words)); //stackWords() turns Vector<String> into sorted Stack<String>
 	}
 
 	//load hash table using cichelli methods from string stack
 	private boolean cichelli(Stack<String> words)
 	{
-		int[] gvalues = new int[26]; //holds g values for each letter, -1 means gvalue not assigned
+
 		for(int gvalue: gvalues) { gvalue = -1; }
 		int maxValue = size/2;
 
 		while(!words.empty())
 		{
 			String word = words.pop();
-			System.out.println(word);
+			int first = charToInt(word.charAt(0));
+			int last = charToInt(word.charAt(word.length()-1));
 
-			//fill in pseudocode
-		}
-		return true;
+			if(gvalues[first] > -1 && gvalues[last] > -1)
+			{
+				if( size == 10 /* PLACEHOLDER SO CODE WILL COMPILE hash value for word is valid*/ )
+				{
+					// assign hash value to word
+					if(cichelli(words))
+					{
+						return true;
+					}
+					else { /*detach the hash value for word*/ }
+				}
+				words.push(word);
+				return false;
+			}
+			else if((gvalues[first] == -1 && gvalues[last] == -1)
+					&& (first != last))
+			{
+				for(int n = 0; n < maxValue; n++)
+				{
+					for(int m = 0; m < maxValue; m++)
+					{
+						gvalues[first] = m;
+						gvalues[last] = n;
+
+						if( size == 10 /* PLACEHOLDER SO CODE WILL COMPILE hash value for word is valid*/ )
+						{
+							// assign hash value to word
+							if(cichelli(words))
+							{
+								return true;
+							}
+							else {
+								/*detach the hash value for word*/
+							}
+						}
+					}
+				}
+				gvalues[first] = -1;
+				gvalues[last] = -1;
+				words.push(word);
+				return false;
+			}
+			else { // only one letter assigned g-value OR first = last letter
+				for(int m = 0; m < maxValue; m++)
+				{
+					if(first == -1){
+						gvalues[first] = m;
+					} else {
+						gvalues[last] = m;
+					}
+
+					if( size == 10/* PLACEHOLDER SO CODE WILL COMPILE hash value for word is valid */)
+					{
+						// assign hash value to word
+						if(cichelli(words))
+						{
+							return true;
+						}
+						else {
+							/*detach the hash value for word*/
+						}
+					}
+				}
+				gvalues[first] = -1;
+				gvalues[last] = -1;
+				words.push(word);
+				return false;
+			}
+		} // end of while(!stack.empty())
+
+		return true; // empty stack means we have a solution
+
 	}
 
 	//assign first and last letter frequency values to words, sort, and stack
@@ -129,9 +199,14 @@ public class Hash
 	}
 
 
-	public void contains(String word)
+	public boolean contains(String word)
 	{
+		int first = charToInt(word.charAt(0));
+		int last = charToInt(word.charAt(word.length()-1));
 
+		// write check
+
+		return false;
 	}
 
 

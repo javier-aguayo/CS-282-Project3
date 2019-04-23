@@ -86,7 +86,6 @@ public class Hash
 
 			if(gvalues[first] > -1 && gvalues[last] > -1) //first and last have g-values already
 			{
-
 				if(table[hashValue(word)] == null)
 				{
 					table[hashValue(word)] = word;
@@ -130,8 +129,8 @@ public class Hash
 				return false;
 			}
 			else { // only one letter assigned g-value OR first = last letter
-				int letter = -1;
 
+				int letter = -1;
 				if(gvalues[first] == -1){
 					letter = first;
 				} else {
@@ -154,8 +153,7 @@ public class Hash
 						}
 					}
 				}
-				gvalues[first] = -1;
-				gvalues[last] = -1;
+				gvalues[letter] = -1;
 				words.push(word);
 				return false;
 			}

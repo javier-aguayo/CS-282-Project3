@@ -6,11 +6,11 @@ public class Driver
 	{
 		Vector<String> words = new Vector<String>();
 
-		words.add("hello");
-		words.add("whats");
-		words.add("up");
-		words.add("hoss");
-		words.add("stupid");
+		words.add("poop");
+		words.add("garbage");
+		words.add("unbelievable");
+		words.add("pots");
+		words.add("establishment");
 
 		Hash test = new Hash(words);
 
@@ -24,6 +24,8 @@ public class Driver
 		System.out.println("Is \"hoss\" in table?: " + test.contains("hoss"));
 		System.out.println("Is \"whats\" in table?: " + test.contains("whats"));
 		System.out.println("Is \"pigeon\" in table?: " + test.contains("pigeon"));
+		System.out.println("Is \"poop\" in table?: " + test.contains("poop"));
+		System.out.println("Is \"establishment\" in table?: " + test.contains("establishment"));
 
 		test.clear();
 		test.print();

@@ -3,77 +3,126 @@ import java.util.Stack;
 
 public class Hash
 {
-	//class variables
+
+//CLASS VARIABLES
 	private String[] table;
 	private int size;
 	int[] gvalues = new int[26]; //holds g values for each letter, -1 means gvalue not assigned
+	int maxValue;
 
 
+//CONSTRUCTOR
 
-	//constructors
 	public Hash(Vector<String> words)
 	{
+		size = words.size();
 		table = new String[size];
+		maxValue = size/2;
 
-		load(words);
-		//Have tested stack, working correctly, sorted words by highest wordvalue (continue work on load())
+		for(int i = 0; i < gvalues.length; i++)
+		{
+			gvalues[i] = -1;
+		}
 
+		cichelli(stackWords(words));
 	}
 
-	//clear hash table and load from String vector
+//PUBLIC METHODS
+
+	//load a new Vector<String> into hash table. Will overwrite old table (same as constructor but for existing object)
 	public void load(Vector<String> words)
 	{
 		size = words.size();
+		table = new String[size];
+		maxValue = size/2;
+
+		for(int i = 0; i < gvalues.length; i++)
+		{
+			gvalues[i] = -1;
+		}
 
 		cichelli(stackWords(words)); //stackWords() turns Vector<String> into sorted Stack<String>
 	}
 
-	//load hash table using cichelli methods from string stack
+	//Empty hash table and clear variables
+	public void clear()
+	{
+		table = null;
+		size = 0;
+		maxValue = 0;
+		for(int i = 0; i < gvalues.length; i++)
+		{
+			gvalues[i] = -1;
+		}
+	}
+
+	//check if the table contains a word
+	public boolean contains(String word)
+	{
+		if(word.compareTo(table[hashValue(word)]) == 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	//prints the hash table for debugging
+	public void print()
+	{
+		for(int i = 0; i < size; i++)
+		{
+			System.out.println("Index " + i + ": " + table[i]);
+		}
+	}
+
+
+//PRIVATE METHODS
+
+	//build hash table using cichelli algorithm
 	private boolean cichelli(Stack<String> words)
 	{
-
-		for(int gvalue: gvalues) { gvalue = -1; }
-		int maxValue = size/2;
-
 		while(!words.empty())
 		{
 			String word = words.pop();
 			int first = charToInt(word.charAt(0));
 			int last = charToInt(word.charAt(word.length()-1));
 
-			if(gvalues[first] > -1 && gvalues[last] > -1)
+			if(gvalues[first] > -1 && gvalues[last] > -1) //first and last have g-values already
 			{
-				if( size == 10 /* PLACEHOLDER SO CODE WILL COMPILE hash value for word is valid*/ )
+
+				if(table[hashValue(word)] == null)
 				{
-					// assign hash value to word
+					table[hashValue(word)] = word;
 					if(cichelli(words))
 					{
 						return true;
 					}
-					else { /*detach the hash value for word*/ }
+					else {
+						table[hashValue(word)] = null;
+					}
 				}
 				words.push(word);
 				return false;
 			}
 			else if((gvalues[first] == -1 && gvalues[last] == -1)
-					&& (first != last))
+					&& (first != last)) //BOTH first and last don't have g-values and are different
 			{
-				for(int n = 0; n < maxValue; n++)
+				for(int n = 0; n <= maxValue; n++)
 				{
-					for(int m = 0; m < maxValue; m++)
+					for(int m = 0; m <= maxValue; m++)
 					{
 						gvalues[first] = m;
 						gvalues[last] = n;
 
-						if( size == 10 /* PLACEHOLDER SO CODE WILL COMPILE hash value for word is valid*/ )
+						if(table[hashValue(word)] == null)
 						{
-							// assign hash value to word
+							table[hashValue(word)] = word;
 							if(cichelli(words))
 							{
 								return true;
 							}
 							else {
-								/*detach the hash value for word*/
+								table[hashValue(word)] = null;
 							}
 						}
 					}
@@ -84,23 +133,27 @@ public class Hash
 				return false;
 			}
 			else { // only one letter assigned g-value OR first = last letter
-				for(int m = 0; m < maxValue; m++)
-				{
-					if(first == -1){
-						gvalues[first] = m;
-					} else {
-						gvalues[last] = m;
-					}
+				int letter = -1;
 
-					if( size == 10/* PLACEHOLDER SO CODE WILL COMPILE hash value for word is valid */)
+				if(gvalues[first] == -1){
+					letter = first;
+				} else {
+					letter = last;
+				}
+
+				for(int m = 0; m <= maxValue; m++)
+				{
+					gvalues[letter] = m;
+
+					if(table[hashValue(word)] == null)
 					{
-						// assign hash value to word
+						table[hashValue(word)] = word;
 						if(cichelli(words))
 						{
 							return true;
 						}
 						else {
-							/*detach the hash value for word*/
+							table[hashValue(word)] = null;
 						}
 					}
 				}
@@ -113,6 +166,23 @@ public class Hash
 
 		return true; // empty stack means we have a solution
 
+	}
+
+	private int hashValue(String word)
+	{
+
+		int length = word.length();
+		int gFirst = gvalues[charToInt(word.charAt(0))];
+		int gLast = gvalues[charToInt(word.charAt(word.length()-1))];
+		int hash = (length + gFirst + gLast) % size;
+/*		System.out.println();
+		System.out.print(word + ": ");
+		System.out.print("length= " + length);
+		System.out.print(", gFirst= " + gFirst);
+		System.out.print(", gLast= " + gLast);
+		System.out.println(", hash= " + hash);
+*/
+		return hash;
 	}
 
 	//assign first and last letter frequency values to words, sort, and stack
@@ -152,17 +222,6 @@ public class Hash
 			keys.add(node);
 		}
 
-		//Just for testing
-		/*
-		for(int i = 0; i < lettercounts.length; i++)
-		{
-			if(lettercounts[i] > 0)
-			{
-				System.out.println(intToChar(i) + ": " + lettercounts[i]);
-			}
-		}
-		*/
-
 		return keys;
 	}
 
@@ -185,30 +244,12 @@ public class Hash
 		}
 		return keys;
 	}
-	private void swap(Vector<Node> keys, int index1, int index2)
+	private void swap(Vector<Node> keys, int index1, int index2) //helper method for sortKeys
 	{
 		Node temp = keys.get(index1);
 		keys.set(index1, keys.get(index2));
 		keys.set(index2, temp);
 	}
-
-
-	//reset Hash object to default
-	public void clear()
-	{
-	}
-
-
-	public boolean contains(String word)
-	{
-		int first = charToInt(word.charAt(0));
-		int last = charToInt(word.charAt(word.length()-1));
-
-		// write check
-
-		return false;
-	}
-
 
 	//helper methods for dealing with chars
 	private int charToInt(char letter) //turns char into int index between 0 and 25
@@ -216,7 +257,6 @@ public class Hash
 		int value = letter - 97;
 		return value;
 	}
-
 	private char intToChar(int value) // turns int into char
 	{
 		char letter = (char)(value + 97);

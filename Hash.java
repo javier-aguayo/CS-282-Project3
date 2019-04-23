@@ -4,15 +4,14 @@ import java.util.Stack;
 public class Hash
 {
 
-//CLASS VARIABLES
+//CLASS VARIABLES ---------------------------------------------
 	private String[] table;
 	private int size;
 	int[] gvalues = new int[26]; //holds g values for each letter, -1 means gvalue not assigned
 	int maxValue;
 
 
-//CONSTRUCTOR
-
+//CONSTRUCTOR ------------------------------------------------
 	public Hash(Vector<String> words)
 	{
 		size = words.size();
@@ -27,8 +26,7 @@ public class Hash
 		cichelli(stackWords(words));
 	}
 
-//PUBLIC METHODS
-
+//PUBLIC METHODS ---------------------------------------------
 	//load a new Vector<String> into hash table. Will overwrite old table (same as constructor but for existing object)
 	public void load(Vector<String> words)
 	{
@@ -41,7 +39,7 @@ public class Hash
 			gvalues[i] = -1;
 		}
 
-		cichelli(stackWords(words)); //stackWords() turns Vector<String> into sorted Stack<String>
+		cichelli(stackWords(words));
 	}
 
 	//Empty hash table and clear variables
@@ -56,7 +54,7 @@ public class Hash
 		}
 	}
 
-	//check if the table contains a word
+	//check if the table contains a certain word
 	public boolean contains(String word)
 	{
 		if(word.compareTo(table[hashValue(word)]) == 0)
@@ -76,8 +74,7 @@ public class Hash
 	}
 
 
-//PRIVATE METHODS
-
+//PRIVATE METHODS --------------------------------------------
 	//build hash table using cichelli algorithm
 	private boolean cichelli(Stack<String> words)
 	{
@@ -163,14 +160,24 @@ public class Hash
 				return false;
 			}
 		} // end of while(!stack.empty())
-
 		return true; // empty stack means we have a solution
-
 	}
 
+	//Take in Vector<String> and return sorted Stack<String>
+	private Stack<String> stackWords(Vector<String> words)
+	{
+		Vector<Node> sortedWords = sortVector(assignFrequencies(words));
+		Stack<String> stack = new Stack<String>();
+		for(int i = 0; i < sortedWords.size(); i++)
+		{
+			stack.push(sortedWords.get(i).getKey());
+		}
+		return stack;
+	}
+
+//HELPER METHODS -------------------------------------------------------
 	private int hashValue(String word)
 	{
-
 		int length = word.length();
 		int gFirst = gvalues[charToInt(word.charAt(0))];
 		int gLast = gvalues[charToInt(word.charAt(word.length()-1))];
@@ -185,20 +192,8 @@ public class Hash
 		return hash;
 	}
 
-	//assign first and last letter frequency values to words, sort, and stack
-	private Stack<String> stackWords(Vector<String> words)
-	{
-		Vector<Node> sortedWords = sortKeys(assignFrequencies(words));
-		Stack<String> stack = new Stack<String>();
-		for(int i = 0; i < sortedWords.size(); i++)
-		{
-			stack.push(sortedWords.get(i).getKey());
-		}
-		return stack;
-	}
-
-	//assign first and last letter frequency values to words
-	private Vector<Node> assignFrequencies(Vector<String> words) //counts first and last letters and puts in lettercounts array
+	//assign first and last letter frequency values to words, returns Vector<Node> (node behaves as Pair)
+	private Vector<Node> assignFrequencies(Vector<String> words)
 	{
 		Vector<Node> keys = new Vector<Node>();
 		int[] lettercounts = new int[26];
@@ -226,7 +221,7 @@ public class Hash
 	}
 
 	//sort vector of nodes based on frequency values of first and last letters
-	private Vector<Node> sortKeys(Vector<Node> keys)
+	private Vector<Node> sortVector(Vector<Node> keys)
 	{
 		if(keys.size() < 2)
 		{
@@ -244,7 +239,7 @@ public class Hash
 		}
 		return keys;
 	}
-	private void swap(Vector<Node> keys, int index1, int index2) //helper method for sortKeys
+	private void swap(Vector<Node> keys, int index1, int index2) //helper method for sortVector
 	{
 		Node temp = keys.get(index1);
 		keys.set(index1, keys.get(index2));

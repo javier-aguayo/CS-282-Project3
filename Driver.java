@@ -1,42 +1,93 @@
 import java.util.Vector;
 import java.io.File;
 import java.io.*;
-
+import java.util.Scanner;
 
 public class Driver
 {
+	private Stats run;
 	public static void main(String[] args)
 	{
-		try 
+		
+		Driver driver = new Driver();
+		driver.excecute();
+		
+	}
+	public void excecute()
+	{
+		
+		Scanner in = new Scanner(System.in);
+		boolean exit = false;
+		while (!exit)
 		{
-			String keyFile = "keys.txt";
-			File keys = new File(keyFile);
-			Stats run;
-			String textFile = "text.txt";
-			File text = new File(textFile);
-			//run.Read(text);
-			System.out.println("File name :"+keys.getName()); 
-			System.out.println("Path: "+keys.getPath()); 
-			System.out.println("Absolute path:" +keys.getAbsolutePath()); 
-			System.out.println("Parent:"+keys.getParent()); 
-			System.out.println("Exists :"+keys.exists());
-			if(keys.exists()) 
-			{ 
-				run = new Stats(keys); //Breaks after this point
-				System.out.println("Is writeable: "+keys.canWrite()); 
-				System.out.println("Is readable: "+keys.canRead()); 
-				System.out.println("Is a directory: "+keys.isDirectory()); 
-				System.out.println("File Size in bytes "+keys.length()); 
-			}
-			if(text.exists()) 
+			switch(commandline(in))
 			{
-				//run.Read(textFile);
+				case "quit":		exit = true;		break;
+				case "KeyFile":		key(in);			break;
+				case "ReadFile":	read(in);			break;
+				case "print":		print();			break;
+				default:	    	help();		    	break;
 			}
-		} 
-		catch (Exception exception1) 
-		{
-			System.out.println("Error opening input file");
-			System.exit(0);
+		}
+
+		in.close();
+	}
+	public String commandline(Scanner in)
+	{
+		System.out.println("\nPlease enter a command: KeyFile, ReadFile, " +
+			"print, and quit.");
+		System.out.print('>');
+		String line = in.nextLine();
+		return line;
+	}
+	public void key(Scanner in)
+	{
+		System.out.println("Name of file? ");
+		System.out.print('>');
+		String keyFile = in.nextLine();
+		File keys = new File(keyFile);
+		if(keys.exists()) 
+		{ 
+			try
+			{
+				run = new Stats(keys); 
+			}
+			catch (Exception exception1) 
+			{
+				System.out.println("Error opening input file");
+				System.exit(0);
+			}
 		}
 	}
+	public void read(Scanner in)
+	{
+		System.out.println("Name of file? ");
+		System.out.print('>');
+		String textFile = in.nextLine();
+		File text = new File(textFile);
+		if(text.exists()) 
+		{ 
+			try
+			{
+				run.Read(text);
+			}
+			catch (Exception exception1) 
+			{
+				System.out.println("Error opening input file");
+				System.exit(0);
+			}
+		}
+	}
+	public void print()
+	{
+		run.Print();
+	}
+public void help()
+	{
+		System.out.println("\nYour options are:" +
+			"\nKeyFile (ending in .txt) " +
+			"\nReadFile (ending in .txt) " +
+			"\nprint " +
+			"\nquit (ends the program)\n");
+	}	
 }

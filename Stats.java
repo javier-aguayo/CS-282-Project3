@@ -51,7 +51,9 @@ public class Stats
 		keyCounts.sort(null);
 		hash = new Hash(keyList);
 		lineCount = 0;
-		wordCount = 0;
+		wordCount = 0;		
+		
+		System.out.println(" Vector :" + keyCounts.toString());
 	}
 
 	public void Read(File text) throws FileNotFoundException
@@ -91,6 +93,7 @@ public class Stats
 	{
 		if (hash.contains(word))
 		{
+			/*
 			int i = keyCounts.size() / 2, j = 4;
 			int cmp = keyCounts.get(i).compareTo(word);
 			while(cmp != 0)
@@ -107,6 +110,14 @@ public class Stats
 				j *= 2;
 			}
 			keyCounts.get(i).Plus();
+			*/
+			for (Entry e : keyCounts)
+			{
+				if(e.Key().compareTo(word) == 0)
+				{
+					e.Plus();
+				}
+			}
 		}
 	}
 

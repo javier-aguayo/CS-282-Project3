@@ -45,7 +45,7 @@ public class Stats
 
 			while(sc.hasNext())
 			{
-				keyList.add(sc.next());
+				keyList.add(sc.next().toLowerCase());
 				keyCounts.add(new Entry(keyList.lastElement()));
 			}
 			sc.close();
@@ -71,7 +71,7 @@ public class Stats
             Scanner line = new Scanner(sc.nextLine());
             while (line.hasNext())
             {
-                countKeyWord(line.next());
+                countKeyWord(line.next().toLowerCase());
                 wordCount++;
             }
             lineCount++;

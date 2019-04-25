@@ -37,21 +37,29 @@ public class Stats
 
     public Stats(File keys) throws FileNotFoundException
     {
-        Scanner sc = new Scanner(keys);
-        Vector<String> keyList = new Vector<String>();
-        keyCounts = new Vector<Entry>();
+        try
+		{
+			Scanner sc = new Scanner(keys);
+			Vector<String> keyList = new Vector<String>();
+			keyCounts = new Vector<Entry>();
 
-        while(sc.hasNext())
-        {
-            keyList.add(sc.next());
-            keyCounts.add(new Entry(keyList.lastElement()));
-        }
-        sc.close();
+			while(sc.hasNext())
+			{
+				keyList.add(sc.next());
+				keyCounts.add(new Entry(keyList.lastElement()));
+			}
+			sc.close();
 
-        keyCounts.sort(null);
-        hash = new Hash(keyList);
-        lineCount = 0;
-        wordCount = 0;
+			keyCounts.sort(null);
+			hash = new Hash(keyList);
+			lineCount = 0;
+			wordCount = 0;
+		} catch(FileNotFoundException ex)
+		{
+			System.out.println(ex);
+			System.out.println("ERROR: Exiting program, please edit input file.");
+			System.exit(0);
+		}
     }
 
     public void Read(File text) throws FileNotFoundException

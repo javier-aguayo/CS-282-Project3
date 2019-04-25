@@ -43,7 +43,7 @@ public class Stats
 
 		while(sc.hasNext())
 		{
-			keyList.add(sc.next().toLowerCase());
+			keyList.add(truncate(sc.next().toLowerCase()));
 			keyCounts.add(new Entry(keyList.lastElement()));
 		}
 		sc.close();
@@ -63,7 +63,7 @@ public class Stats
 			Scanner line = new Scanner(sc.nextLine());
 			while (line.hasNext())
 			{
-				countKeyWord(line.next().toLowerCase());
+				countKeyWord(truncate(line.next().toLowerCase()));
 				wordCount++;
 			}
 			lineCount++;
@@ -89,7 +89,6 @@ public class Stats
 
 	private void countKeyWord(String word)
 	{
-		word = truncate(word);
 		if (hash.contains(word))
 		{
 			int i = keyCounts.size() / 2, j = 4;

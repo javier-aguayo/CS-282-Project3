@@ -53,7 +53,7 @@ public class Stats
 		lineCount = 0;
 		wordCount = 0;		
 		
-		System.out.println(" Vector :" + keyCounts.toString());
+		//System.out.println(" Vector :" + keyCounts.toString());
 	}
 
 	public void Read(File text) throws FileNotFoundException

@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Driver
 {
 	private Stats run;
+	private boolean hasKey = false; 
 	public static void main(String[] args)
 	{
 		
@@ -18,14 +19,38 @@ public class Driver
 		
 		Scanner in = new Scanner(System.in);
 		boolean exit = false;
+		//System.out.println("Enter name of key file? ");
+		//System.out.print('>');
+		String keyFile;
+		File keys ;
+		while(true)
+		{
+			System.out.println("Enter name of key file?(.txt) ");
+			System.out.print('>');
+			keyFile = in.nextLine();
+			keys = new File(keyFile);
+			if(keys.exists()) 
+			{ 
+				try
+				{
+					run = new Stats(keys); 
+					hasKey = true;
+					break;
+				}
+				catch (Exception exception1) 
+				{
+					System.out.println("Error opening input file");
+					System.exit(0);
+				}
+			}
+			else System.out.println("File does not exists\n");
+		}
 		while (!exit)
 		{
 			switch(commandline(in))
 			{
 				case "quit":		exit = true;		break;
-				case "KeyFile":		key(in);			break;
 				case "ReadFile":	read(in);			break;
-				case "print":		print();			break;
 				default:	    	help();		    	break;
 			}
 		}
@@ -34,34 +59,19 @@ public class Driver
 	}
 	public String commandline(Scanner in)
 	{
-		System.out.println("\nPlease enter a command: KeyFile, ReadFile, " +
-			"print, and quit.");
+		System.out.println("\nPlease enter a command: ReadFile " +
+			"or  quit.");
 		System.out.print('>');
 		String line = in.nextLine();
 		return line;
 	}
-	public void key(Scanner in)
-	{
-		System.out.println("Name of file? ");
-		System.out.print('>');
-		String keyFile = in.nextLine();
-		File keys = new File(keyFile);
-		if(keys.exists()) 
-		{ 
-			try
-			{
-				run = new Stats(keys); 
-			}
-			catch (Exception exception1) 
-			{
-				System.out.println("Error opening input file");
-				System.exit(0);
-			}
-		}
-	}
 	public void read(Scanner in)
 	{
-		System.out.println("Name of file? ");
+		if(!hasKey)
+		{
+			System.out.println("Error. Enter keyFile first");
+		}
+		System.out.println("Name of file?(.txt) ");
 		System.out.print('>');
 		String textFile = in.nextLine();
 		File text = new File(textFile);
@@ -77,17 +87,13 @@ public class Driver
 				System.exit(0);
 			}
 		}
-	}
-	public void print()
-	{
+		else System.out.println("File does not exists");
 		run.Print();
 	}
-public void help()
+	public void help()
 	{
 		System.out.println("\nYour options are:" +
-			"\nKeyFile (ending in .txt) " +
 			"\nReadFile (ending in .txt) " +
-			"\nprint " +
 			"\nquit (ends the program)\n");
 	}	
 }

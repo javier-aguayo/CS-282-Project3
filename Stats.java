@@ -51,12 +51,11 @@ public class Stats
 
 		while(sc.hasNext())
 		{
-			keyList.add(truncate(sc.next().toLowerCase()));
+			keyList.add(clean(sc.next()));
 			keyCounts.add(new Entry(keyList.lastElement()));
 		}
 		sc.close();
 
-		keyCounts.sort(null);
 		hash = new Hash(keyList);
 		lineCount = 0;
 		wordCount = 0;
@@ -71,7 +70,7 @@ public class Stats
 			Scanner line = new Scanner(sc.nextLine());
 			while (line.hasNext())
 			{
-				countKeyWord(truncate(line.next().toLowerCase()));
+				countKeyWord(clean(line.next()));
 				wordCount++;
 			}
 			lineCount++;
@@ -95,10 +94,13 @@ public class Stats
 		System.out.println("Total Lines Read: " + lineCount);
 		System.out.println("Total Words Read: " + wordCount);
 		System.out.println("Break Down by Key Word");
+        int totalKeyCount = 0;
 		for (Entry e : keyCounts)
 		{
-			System.out.println(e.Key() + ": " + e.Count());
+			System.out.println('\t' + e.Key() + ": " + e.Count());
+            totalKeyCount += e.Count();
 		}
+        System.out.println("Total Key Count: " + totalKeyCount);
 		System.out.println("**********************");
 	}
 
@@ -116,14 +118,21 @@ public class Stats
 		}
 	}
 
-	private String truncate(String word)
+	private String clean(String word)
 	{
-		if(word.charAt(word.length()-1) < 97 || word.charAt(word.length()-1) > 122)
-		{
-			return word.substring(0, word.length()-1);
-		} else {
-			return word;
-		}
+        String s = "";
+        for (char c : word.toCharArray())
+        {
+            if (c >= 'A' && c <= 'Z')
+            {
+                c = (char)(c - 'A' + 'a');
+            }
+            if (c >= 'a' && c <= 'z')
+            {
+                s += c;
+            }
+        }
+        return s;
 	}
 }
 

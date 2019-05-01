@@ -1,0 +1,28 @@
+COMP282 Section 16304 Project 3
+
+Group members:
+Nicholas Warfield
+Javier Aguayo
+John Wiesenfeld
+
+Project Status
+--------------------
+Compiles and runs properly. We implemented the ability to ignore characters at the end of strings read, so the counts our program returns are accurate even if there is punctuation after key words. 
+
+
+Development of Code:
+--------------------
+We met early on to discuss how we wanted our project to work. We decided to limit ourselves to three classes: Driver, Stats, and Hash. The Stats class would perform counts and hold onto count information, as well as print. The Hash class would hold the hash table of keys and allow for checking of whether a word is in the table.
+
+We delegated tasks, not really knowing for sure which parts would be the most difficult. John would take the first pass at Hash, Nick would take the first pass at Stats, and Javier would take the first pass at the Driver class. 
+
+Once John finished the first pass of Hash, Nick and Javier were able to write their first passes. 
+
+As we wrote the project, we realized that since Hash takes in a Vector<String>, and stats will have to parse the files to do its counts, the Driver file would actually be a bit simpler than we first imagined, so Javier helped debug and rewrite a few things in Stats. Nick and John also rewrote parts of the project as bugs became apparent.
+
+We found several bugs along the way, though thankfully nothing persistant like in project 2. The first major bug was in Hash, where it would fill the table properly with some sets of words but not others. We tracked down the bug and realized it was a slight misinterpretation of some of the pseudocode in the else statement of cichelli's algorithm. It was a pretty simple fix, John mistakenly had the g values reset for first and last letters after the else statement if there was no successful hash, when it should only have been the letter that was unassigned before beginning the attempt (line 163 in Hash). 
+
+We had a few discussions about the best flow for the program on the users end, and Javier implemented those decisions, such as ReadFile cannot be performed if a Key File has not been read, etc. 
+
+
+This summary file was written by John, edited by Nick and Javier.

@@ -1,3 +1,10 @@
+/*
+COMP282 Section 16304 Project 3
+Group members:
+Nicholas Warfield
+Javier Aguayo
+John Wiesenfeld
+*/
 import java.util.Vector;
 import java.util.Stack;
 
@@ -180,13 +187,6 @@ public class Hash
 		int gFirst = gvalues[charToInt(word.charAt(0))];
 		int gLast = gvalues[charToInt(word.charAt(word.length()-1))];
 		int hash = (length + gFirst + gLast) % size;
-/*		System.out.println();
-		System.out.print(word + ": ");
-		System.out.print("length= " + length);
-		System.out.print(", gFirst= " + gFirst);
-		System.out.print(", gLast= " + gLast);
-		System.out.println(", hash= " + hash);
-*/
 		return hash;
 	}
 

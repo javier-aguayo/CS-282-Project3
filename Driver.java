@@ -1,4 +1,10 @@
-import java.util.Vector;
+/*
+COMP282 Section 16304 Project 3
+Group members:
+Nicholas Warfield
+Javier Aguayo
+John Wiesenfeld
+*/
 import java.io.File;
 import java.io.*;
 import java.util.Scanner;
@@ -19,11 +25,10 @@ public class Driver
 		
 		Scanner in = new Scanner(System.in);
 		boolean exit = false;
-		//System.out.println("Enter name of key file? ");
-		//System.out.print('>');
 		String keyFile;
+		String retry;
 		File keys ;
-		while(true)
+		while(!exit)
 		{
 			System.out.println("Enter name of key file?(.txt) ");
 			System.out.print('>');
@@ -43,7 +48,15 @@ public class Driver
 					System.exit(0);
 				}
 			}
-			else System.out.println("File does not exists\n");
+			else System.out.println("File does not exist\nWould you like to try again?: y or n");
+			retry = in.nextLine();
+			switch(retry)
+			{
+				case "y":		exit = false;       break;
+				case "n":       exit = true;		break;
+				default:        System.out.println("Bad input. Would you like to try again? : y or n");     break;
+			}
+
 		}
 		while (!exit)
 		{
@@ -88,7 +101,6 @@ public class Driver
 			}
 		}
 		else System.out.println("File does not exists");
-		run.Print();
 	}
 	public void help()
 	{

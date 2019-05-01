@@ -1,3 +1,10 @@
+/*
+COMP282 Section 16304 Project 3
+Group members:
+Nicholas Warfield
+Javier Aguayo
+John Wiesenfeld
+*/
 import java.util.Scanner;
 import java.util.Vector;
 import java.io.File;
@@ -6,6 +13,7 @@ import java.io.FileNotFoundException;
 
 public class Stats
 {
+	//class to track keys and counts as Pairs
 	private class Entry implements Comparable<Entry>
 	{
 		public Entry(String k)
@@ -51,9 +59,7 @@ public class Stats
 		keyCounts.sort(null);
 		hash = new Hash(keyList);
 		lineCount = 0;
-		wordCount = 0;		
-		
-		//System.out.println(" Vector :" + keyCounts.toString());
+		wordCount = 0;
 	}
 
 	public void Read(File text) throws FileNotFoundException
@@ -72,6 +78,13 @@ public class Stats
 			line.close();
 		}
 		sc.close();
+		Print();
+		lineCount = 0;
+		wordCount = 0;
+		for (Entry e : keyCounts)
+		{
+			e.Reset();
+		}
 	}
 
 	public void Print()
@@ -93,24 +106,6 @@ public class Stats
 	{
 		if (hash.contains(word))
 		{
-			/*
-			int i = keyCounts.size() / 2, j = 4;
-			int cmp = keyCounts.get(i).compareTo(word);
-			while(cmp != 0)
-			{
-				if (cmp < 0)
-				{
-					i -= keyCounts.size() / j;
-				}
-				else if (cmp > 0)
-				{
-					i += keyCounts.size() / j;
-				}
-				cmp = keyCounts.get(i).compareTo(word);
-				j *= 2;
-			}
-			keyCounts.get(i).Plus();
-			*/
 			for (Entry e : keyCounts)
 			{
 				if(e.Key().compareTo(word) == 0)
